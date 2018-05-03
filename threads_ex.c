@@ -37,7 +37,10 @@ int main(int argc, char **argv) {
         printf("Fuck you\n");
         exit(0);
     }
-
+	
+/*
+	while (arg != 0) with a pre decrement
+*/
     while (--argc) {
         args[argc - 1] = atoi(argv[argc]);
     }
