@@ -3,6 +3,9 @@
 #include <pthread.h>
 #include <unistd.h>
 
+static int sum = 0;
+static pthread_mutex_t lock;
+
 typedef struct {
     unsigned int size;
     unsigned int *part_int_arr;
@@ -51,7 +54,7 @@ int main(int argc, char **argv) {
 
     srand(args[SEED]);
     for (i = 0; i < args[NELMT]; i++) {
-        int_arr[i] = rand();
+        int_arr[i] = rand()%100;
     }
 
     print_info(args, int_arr);
@@ -60,6 +63,9 @@ int main(int argc, char **argv) {
     q_nelmt = args[NELMT] / args[NTHRD];
     r_nelmt = args[NELMT] % args[NTHRD];
 
+/*
+	instantiating threads
+*/
     for (i = 0; i < args[NTHRD]; i++) {
         (func_arguments + i)->size = (unsigned int)q_nelmt + (r_nelmt-- > 0);
         (func_arguments + i)->part_int_arr = int_arr + pos;
@@ -68,6 +74,9 @@ int main(int argc, char **argv) {
         pthread_create(tid_arr + i, 0, func, func_arguments + i);
         pos += (func_arguments + i)->size;
     }
+/*
+	preparing to execute
+*/
 
     func_arguments->size = args[NTHRD];
     func_arguments->part_int_arr = malloc(args[NTHRD] * sizeof(unsigned int));
@@ -109,12 +118,20 @@ void *compute_max(void *args) {
 }
 
 void *compute_sum(void *args) {
-    unsigned int i = 0, *sum = malloc(sizeof(unsigned int));
+    unsigned int i = 0;
+	unsigned int *sum_p;
+	sum_p = malloc(1 * sizeof(unsigned int));
 
-    for (*sum = 0; i < ((f_args*)args)->size; i++) {
+    for (i = 0; i < ((f_args*)args)->size; i++) {
+	pthread_mutex_lock(&lock);
+	printf("adding %d\n", ((f_args*)args)->part_int_arr[i]);
+	sum += ((f_args*)args)->part_int_arr[i];
+/*
         *sum = (*sum + ((f_args*)args)->part_int_arr[i]) % 1000000;
+*/
+	pthread_mutex_unlock(&lock);
     }
-    printf("Sum: %u\n", *sum);
-
-    return sum;
+	*sum_p = sum;
+    printf("Sum: %u\n", sum);
+    return sum_p;
 }
