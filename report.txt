@@ -1,0 +1,73 @@
+************
+FINDING MAX
+************
+
+wireless-10-105-20-106:Threads_C alvinzhao$ ./a.out 20000 1 1 1 Y
+
+Max: 2145373338
+User time: 0.000055
+System time: 0.000126
+Wall time: 0.000150
+wireless-10-105-20-106:Threads_C alvinzhao$ ./a.out 20000 2 1 1 Y
+
+
+Max: 2145373338
+User time: 0.000085
+System time: 0.000211
+Wall time: 0.000184
+wireless-10-105-20-106:Threads_C alvinzhao$ ./a.out 20000 3 1 1 Y
+
+
+
+Max: 536870912
+User time: 0.000080
+System time: 0.000272
+Wall time: 0.000213
+wireless-10-105-20-106:Threads_C alvinzhao$ 
+wireless-10-105-20-106:Threads_C alvinzhao$ ./a.out 20000 4 1 1 Y
+
+
+
+
+Max: 2952790016
+User time: 0.000147
+System time: 0.000464
+Wall time: 0.000264
+
+**************
+FINDING SUM
+**************
+
+wireless-10-105-20-106:Threads_C alvinzhao$ ./a.out 20000 1 1 0 Y
+
+Sum: 549231
+User time: 0.000053
+System time: 0.000126
+Wall time: 0.000150
+wireless-10-105-20-106:Threads_C alvinzhao$ ./a.out 20000 2 1 0 Y
+
+
+Sum: 444829
+User time: 0.000066
+System time: 0.000186
+Wall time: 0.000177
+wireless-10-105-20-106:Threads_C alvinzhao$ ./a.out 20000 3 1 0 Y
+
+
+
+Sum: 966444
+User time: 0.000105
+System time: 0.000320
+Wall time: 0.000236
+wireless-10-105-20-106:Threads_C alvinzhao$ ./a.out 20000 4 1 0 Y
+
+
+
+
+Sum: 431044
+User time: 0.000177
+System time: 0.000499
+Wall time: 0.000301
+
+
+It seems that adding threads decreased the performance of our program. This was experienced in the concurrency of CMSC132. Ideally, the addition of threads would increase the performance of our program. Our program instead, scaled linearly the more threads added.
