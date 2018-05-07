@@ -36,6 +36,7 @@ int main(int argc, char **argv) {
     f_args *func_arguments;
     void *result;
 
+    pthread_mutex_init(&lock, NULL); 
     if (argc != 6) {
         printf("Fuck you\n");
         exit(0);
@@ -96,6 +97,7 @@ int main(int argc, char **argv) {
         free(answer);
     }
 
+	pthread_mutex_destroy(&lock);
     free(int_arr);
     free(tid_arr);
     free(func_arguments->part_int_arr);
@@ -123,13 +125,13 @@ void *compute_sum(void *args) {
 	sum_p = malloc(1 * sizeof(unsigned int));
 
     for (i = 0; i < ((f_args*)args)->size; i++) {
+	printf("adding %u\n", ((f_args*)args)->part_int_arr[i]);
 	pthread_mutex_lock(&lock);
-	printf("adding %d\n", ((f_args*)args)->part_int_arr[i]);
 	sum += ((f_args*)args)->part_int_arr[i];
+	pthread_mutex_unlock(&lock);
 /*
         *sum = (*sum + ((f_args*)args)->part_int_arr[i]) % 1000000;
 */
-	pthread_mutex_unlock(&lock);
     }
 	*sum_p = sum;
     printf("Sum: %u\n", sum);
